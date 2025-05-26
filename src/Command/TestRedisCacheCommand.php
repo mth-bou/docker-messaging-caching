@@ -21,11 +21,10 @@ class TestRedisCacheCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $item = $this->cachePool->getItem('test_key');
+        $item = $this->cachePool->getItem('symfony.test');
 
         if (!$item->isHit()) {
-          $output->writeln('Cache miss, setting value...');
-          $item->set('Hello from Redis');
+          $item->set('Hello from Symfony');
           $item->expiresAfter(60); // 60s
           $this->cachePool->save($item);
         } else {
