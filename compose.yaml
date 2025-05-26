@@ -42,16 +42,13 @@ services:
       - redis_data:/data
         
   redisinsight:
-    image: redislabs/redisinsight:1.14.0
+    image: redislabs/redisinsight:2.68.0
     restart: unless-stopped
     container_name: redisinsight
     ports:
-      - "8001:8001"
+      - "5540:5540"
     environment:
-      - RIHOST=0.0.0.0
-      - RIPORT=8001
-      - RIUSER=admin
-      - RIPASSWORD=admin
+      - RI_APP_URL=https://redis.localhost
     depends_on:
       - redis
     

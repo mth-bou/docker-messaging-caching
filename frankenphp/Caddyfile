@@ -63,5 +63,5 @@
 }
 
 redis.localhost {
-  reverse_proxy redisinsight:8001
+  reverse_proxy redisinsight:5540
 }
