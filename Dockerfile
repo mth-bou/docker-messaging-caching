@@ -63,6 +63,14 @@ ENV FRANKENPHP_WORKER_CONFIG=watch
 
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    librdkafka-dev \
+    pkg-config \
+    zlib1g-dev \
+  && pecl install rdkafka || (echo "rdkafka install failed" && exit 1) \
+  && docker-php-ext-enable rdkafka \
+  && rm -rf /var/lib/apt/lists/*
+
 RUN set -eux; \
 	install-php-extensions \
 		xdebug \
@@ -78,6 +86,14 @@ FROM frankenphp_base AS frankenphp_prod
 ENV APP_ENV=prod
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    librdkafka-dev \
+    pkg-config \
+    zlib1g-dev \
+  && pecl install rdkafka || (echo "rdkafka install failed" && exit 1) \
+  && docker-php-ext-enable rdkafka \
+  && rm -rf /var/lib/apt/lists/*
 
 COPY --link frankenphp/conf.d/20-app.prod.ini $PHP_INI_DIR/app.conf.d/
 
